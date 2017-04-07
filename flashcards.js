@@ -1,5 +1,4 @@
-var action = process.argv[2];
-var value = process.argv[3];
+
 
 var inquirer = require("inquirer");
 
@@ -10,8 +9,20 @@ function BasicCard(front, back) {
 
 var one = new BasicCard();
 
-one.front = "How tall is Mount Everest? (in feet)...";
+one.front = "1: How tall is Mount Everest? (in feet)...";
 one.back = 29029;
+
+function ClozeCard(clozeAnswer, clozeQuestion, clozeFull) {
+    this.clozeAnswer = clozeAnswer;
+    this.clozeQuestion = clozeQuestion;
+    this.clozeFull = clozeFull;
+}
+
+var two = new ClozeCard();
+
+two.clozeAnswer = "k2";
+two.clozeQuestion = "is the second tallest mountain in the world.";
+two.clozeFull = "k2 is the second tallest mountain in the world";
 
 inquirer.prompt([
     {
@@ -21,61 +32,20 @@ inquirer.prompt([
     },
     {
         type: "input",
-        message: "...is the second tallest mountain in the world",
-        name: "cloze answer"
+        message: "2: (Fill in the blank)..." + two.clozeQuestion,
+        name: "cloze"
     },
 ]).then(function(user) {
-        // console.log(JSON.stringify(user, null, 2));
-        if (user.answer === "answer") {
-            console.log(one.back);
+        //answer for basic card
+        if (user.answer === 29029) {
+            console.log("correct!");
+        } else {
+            console.log("sorry it's actually " + one.back);
         }
-        // console.log(one.back);        
+        //answer for cloze card
+        if (user.cloze === "k2") {
+            console.log("correct! " + two.clozeFull);
+        } else {
+            console.log("sorry, it's " + two.clozeAnswer + "... better luck next time");
+        }
 });
-
-
-// function BasicCard(front, back) {
-//     this.front = front;
-//     this.back = back;
-// }
-
-// var one = new BasicCard();
-
-// one.front = "question";
-// one.back = "answer";
-
-// console.log(one.front);
-
-// if (action === "easy") {
-//     console.log(one.front);
-// }
-
-// if ((action === "answer") && (value === "answer")) {
-//     console.log("correct");
-// }
-
-// if ((action === "answer") && (value !== "answer")) {
-//     console.log("try again");
-// }
-
-// try inquirer for this one
-// function ClozeCard(text, cloze) {
-//     this.text = text;
-//     this.cloze = cloze;
-// }
-
-// var two = new ClozeCard();
-
-// two.text = "...question";
-// two.cloze = "another question";
-
-// if (action === "hard") {
-//     console.log (two.text);
-// }
-
-// if ((action === "answer") && (value === "another")) {
-//     console.log(two.cloze);
-// }
-
-// if ((action === "answer") && (value !== "another")) {
-//     console.log("try again");
-// }
